@@ -1,46 +1,22 @@
-// Preloader with Sound
-window.addEventListener("load", () => {
-    const preloader = document.getElementById("preloader");
-    const dingSound = new Audio("assets/sounds/ding.mp3");
-
-    preloader.classList.add("preloader-hidden");
-    setTimeout(() => {
-        preloader.style.display = "none";
-        dingSound.play();
-    }, 500);
-});
-
-// Dark Mode Toggle with Sound
-const darkModeToggle = document.getElementById("dark-mode-toggle");
-const body = document.body;
-const clickSound = new Audio("assets/sounds/click.mp3");
-
-if (localStorage.getItem("darkMode") === "enabled") {
-    body.classList.add("dark-mode");
-}
-
-darkModeToggle.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
-    clickSound.play();
-
-    if (body.classList.contains("dark-mode")) {
-        localStorage.setItem("darkMode", "enabled");
+document.getElementById('notifyForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevents the page from reloading/submitting normally
+    
+    const emailInput = document.getElementById('emailInput');
+    const message = document.getElementById('message');
+    
+    // Check if the input value looks like an email (simple check)
+    if (emailInput.value && emailInput.checkValidity()) {
+        
+        // --- IMPORTANT: This is where you would integrate with a backend service ---
+        // e.g., using fetch() to send the email to a serverless function or email service (Mailchimp, ConvertKit, etc.)
+        
+        // Success Message Display
+        message.textContent = `Success! ${emailInput.value} is now on our pre-launch recipe list.`;
+        message.style.color = '#90EE90'; // Light green
+        emailInput.value = ''; // Clear the input field
     } else {
-        localStorage.setItem("darkMode", "disabled");
+        // Error Message Display
+        message.textContent = 'Please enter a valid email to get on the recipe list!';
+        message.style.color = '#FF69B4'; // Neon Pink for error
     }
 });
-
-// Scroll Fade-in Animation
-const sections = document.querySelectorAll("section");
-
-const revealSections = () => {
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        if (sectionTop < window.innerHeight - 100) {
-            section.classList.add("visible");
-        }
-    });
-};
-
-window.addEventListener("scroll", revealSections);
-revealSections();
